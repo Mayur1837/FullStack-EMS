@@ -33,7 +33,7 @@ const Sidebar = () => {
       ? { name: "Employees", href: "/employees", icon: UserIcon }
       : { name: "Attendance", href: "/attendance", icon: Calendar1Icon },
     { name: "Leave", href: "/leave", icon: FileTextIcon },
-    { name: "Paylips", href: "/paylips", icon: DollarSignIcon },
+    { name: "Paylips", href: "/payslips", icon: DollarSignIcon },
     { name: "Settings", href: "/settings", icon: SettingsIcon },
   ];
    const handlelogout = () => {
