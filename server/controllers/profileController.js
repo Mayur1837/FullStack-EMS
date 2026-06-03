@@ -1,4 +1,3 @@
-import { jsx } from "react/jsx-runtime";
 import Employee from "../models/Employee.js";
 
 // Get Profile
