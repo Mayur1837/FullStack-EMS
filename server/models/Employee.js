@@ -3,11 +3,11 @@ import { DEPARTMENTS } from "../constants/departments.js";
 
 const employeeSchema = new mongoose.Schema(
   {
-    email: {
+    userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
-      unique: true,
+      // unique: true,
     },
     firstName: {
       type: String,
@@ -41,7 +41,7 @@ const employeeSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
-    employementStatus: {
+    employmentStatus: {
       type: String,
       enum: ["ACTIVE", "INACTIVE"],
       default: "ACTIVE",
