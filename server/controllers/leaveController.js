@@ -60,9 +60,9 @@ export const getLeaves = async (req, res) => {
     if (isAdmin) {
       const status = req.query.status;
       const where = status ? { status } : {};
-      const leaves = (
-        await LeaveApplication.find(where).populate("employeeId")
-      ).sort({ createdAt: -1 });
+      const leaves = await LeaveApplication.find(where)
+        .populate("employeeId")
+        .sort({ createdAt: -1 });
       const data = leaves.map((l) => {
         const obj = l.toObject();
         return {
@@ -88,6 +88,7 @@ export const getLeaves = async (req, res) => {
     }
   } catch (error) {
     res.status(500).json({ error: "Failed" });
+
   }
 };
 
@@ -95,7 +96,7 @@ export const getLeaves = async (req, res) => {
 // PATCH /api/leaves/:id
 export const updateLeaveStatus = async (req, res) => {
   try {
-    const status = req.body;
+    const {status} = req.body;
     if (!["APPROVED", "REJECTED", "PENDING"].includes(status)) {
       return res.status(400).json({ error: "Invlaid status" });
     }

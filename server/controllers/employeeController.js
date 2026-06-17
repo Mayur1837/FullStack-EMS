@@ -9,8 +9,8 @@ export const getEmployees = async (req, res) => {
     const { department } = req.query;
     const where = {};
     if (department) where.department = department;
-    const employees = (await Employee.find(where))
-      .toSorted({ createdAt: -1 })
+    const employees = await Employee.find(where)
+      .sort({ createdAt: -1 })
       .populate("userId", "email role")
       .lean();
 
@@ -24,6 +24,7 @@ export const getEmployees = async (req, res) => {
     return res.json(result);
   } catch (error) {
     return res.status(500).json({ error: "Failed to fetch employees" });
+
   }
 };
 

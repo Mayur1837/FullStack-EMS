@@ -54,21 +54,67 @@ export const session = (req, res) => {
 
 // Chnage password for employee and admin
 // POST /api/auth/change-password
+// export const changePassowrd = async (req, res) => {
+//   try {
+//     const session = req.session;
+//     const { currentPassword, newPassword } = req.body;
+//     if (!currentPassword || !newPassword) {
+//       return res.status(400).json({ error: "Both passwords are required" });
+//     }
+//     const user = await User.findById(session.userId);
+//     if (!user) return res.status(404).json({ error: "User not found" });
+//     const isValid = await bcrypt.compare(currentPassword, user.password);
+//     if (!isValid)
+//       return res.status(400).json({ error: "Current password is incorrect" });
+//     const hashed = await bcrypt.hash(session.userId, { password: hashed });
+//     return res.json({ success: true });
+//   } catch (error) {
+//     return res.status(500).json({ error: "Failed to change password" });
+//   }
+// };
 export const changePassowrd = async (req, res) => {
   try {
     const session = req.session;
     const { currentPassword, newPassword } = req.body;
+
     if (!currentPassword || !newPassword) {
-      return res.status(400).json({ error: "Both passwords are required" });
+      return res.status(400).json({
+        error: "Both passwords are required",
+      });
     }
+
     const user = await User.findById(session.userId);
-    if (!user) return res.status(404).json({ error: "User not found" });
-    const isValid = await bcrypt.compare(currentPassword, user.password);
-    if (!isValid)
-      return res.status(400).json({ error: "Current password is incorrect" });
-    const hashed = await bcrypt.hash(session.userId, { password: hashed });
-    return res.json({ success: true });
+
+    if (!user) {
+      return res.status(404).json({
+        error: "User not found",
+      });
+    }
+
+    const isValid = await bcrypt.compare(
+      currentPassword,
+      user.password
+    );
+
+    if (!isValid) {
+      return res.status(400).json({
+        error: "Current password is incorrect",
+      });
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    user.password = hashedPassword;
+    await user.save();
+
+    return res.json({
+      success: true,
+    });
   } catch (error) {
-    return res.status(500).json({ error: "Failed to change password" });
+    console.error("Change Password Error:", error);
+
+    return res.status(500).json({
+      error: "Failed to change password",
+    });
   }
 };
