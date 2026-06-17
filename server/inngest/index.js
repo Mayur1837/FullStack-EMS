@@ -101,7 +101,10 @@ const leaveApplicationReminder = inngest.createFunction(
 
 // Cron: Check attendance at 11:30 AM ISt (6:00 UTC) and email absent employees
 const attendanceReminderCron = inngest.createFunction(
-  { id: "attendance-reminder-cron", triggers: [{ cron: "TZ=Asia/Kolkata 30 11 * * *" }] },
+  {
+    id: "attendance-reminder-cron",
+    triggers: [{ cron: "TZ=Asia/Kolkata 30 11 * * *" }],
+  },
 
   async ({ step }) => {
     // Step 1: Get todays date Range(IST)
@@ -176,9 +179,10 @@ const attendanceReminderCron = inngest.createFunction(
                         `,
           });
         });
+        await Promise.all(emailPromises);
+        return { emailsSent: absentEmployees.length };
       });
     }
-    await Promise.all(emailPromises);
     return {
       totalActive: activeEmployees.length,
       onLeave: onLeavesIds.length,
