@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeftIcon, EyeOffIcon, EyeIcon, Loader2Icon } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import toast from "react-hot-toast";
+import GoogleLoginButton from "./GoogleLoginButton";
 
 const LoginForm = ({ role, title, subtitle }) => {
   const [email, setEmail] = useState("");
@@ -116,6 +117,16 @@ const LoginForm = ({ role, title, subtitle }) => {
               Sign In
             </button>
           </form>
+
+          <div className="my-6 flex items-center gap-4">
+            <div className="flex-1 h-px bg-slate-200" />
+
+            <span className="text-sm text-slate-400">OR</span>
+
+            <div className="flex-1 h-px bg-slate-200" />
+          </div>
+
+          <GoogleLoginButton role={role} />
         </div>
       </div>
     </div>
